@@ -1,0 +1,263 @@
+ipy (1:0.81-1) unstable; urgency=low
+
+  * Team Upload
+  [ Jakub Wilk ]
+  * Use canonical URIs for Vcs-* fields.
+
+  [ Jackson Doak ]
+  * New upstream release.
+  * Create debian/source/format
+  * Create doc-base files
+  * debian/control:
+    - Bump debhelper to 9
+    - Bump standards-version to 3.9.4
+    - Add X-Python fields
+
+ -- Bernd Zeimetz <bzed@debian.org>  Thu, 13 Feb 2014 23:56:40 +0100
+
+ipy (1:0.75-1) unstable; urgency=low
+
+  * Team upload
+  * New upstream version
+    - Update debian/copyright
+  * Convert to dh_python2
+    - Drop build-depends on python-support
+    - Remove debian/pyversions
+    - Version python-all build-dep
+    - Build --with python2
+  * Add support for Python3
+    - Add new python3-ipy binary to debian/control
+    - Add python3-all to build-depends
+    - Build --with python3
+    - Override dh_auto_build/install to build for python and python3
+    - Override dh_auto_clean to remove python3 build directory
+    - Not running tests for python3, since test/test_IPy.py is python only
+    - Rename debian/docs to python-ipy.docs and python3-ipy.docs so docs are
+      installed in both packages
+  * Drop old conflicts on python2.3/2.4-ipy
+  * Drop unneeded python:Provides
+  * Bump standards version to 3.9.2 without further change
+  * Update Homepage: field in debian/control with new upstream location on
+    github
+
+ -- Scott Kitterman <scott@kitterman.com>  Wed, 18 Jan 2012 07:23:32 -0500
+
+ipy (1:0.72-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Mon, 14 Feb 2011 14:53:18 +0100
+
+ipy (1:0.70-1) unstable; urgency=low
+
+  * New upstream version. 
+
+ -- Bernd Zeimetz <bzed@debian.org>  Fri, 06 Nov 2009 14:15:48 +0100
+
+ipy (1:0.64-1) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Bernd Zeimetz ]
+  * New upstream version.
+  * debian/pycompat:
+    - Deleting file, not needed.
+  * debian/control, debian/rules:
+    - Use the new dh to build the package.
+    - Run the new test suite, which is provided by upstream since this
+      version instead of the buggy docstring test.
+    - Bump Standards-Version to 3.8.3, no changes needed.
+  * debian/clean:
+    - Add file. 
+  * debian/compat:
+    - Bump to level 7. 
+
+ -- Bernd Zeimetz <bzed@debian.org>  Tue, 25 Aug 2009 18:01:19 +0200
+
+ipy (1:0.62-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Sun, 29 Jun 2008 17:42:09 +0200
+
+ipy (1:0.61-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Sun, 22 Jun 2008 03:04:50 +0200
+
+ipy (1:0.60-1) unstable; urgency=low
+
+  * New upstream version.
+  * debian/README.Debian-source:
+    - Deleting file, not needed anymore.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Tue, 27 May 2008 01:11:56 +0200
+
+ipy (1:0.56-1) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+  
+  [ Morten Werner Forsbring ]
+  * debian/control
+    - changed my lastname
+
+  [ Bernd Zeimetz ]
+  * New upstream version.
+  * debian/uscan-tarball-clean.sh:
+    - Removing file, not needed anymore.
+  * debian/watch:
+    - Updating file as we don't need debian/uscan-tarball-clean.sh anymore,
+      upstream's debian directory was removed by upstream.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Fri, 15 Feb 2008 19:05:40 +0100
+
+ipy (1:0.55+1-1) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/watch
+    - Url simplification
+
+  [ Bernd Zeimetz ]
+  * New sourceful upload with a faked +1 version. The tarball does not contain
+    upstream's debian directory anymore, which slipped the maintainers' eyes
+    during the last uploads.
+  * debian/control:
+    - Updating my email address.
+    - Bumping Standards-Version to 3.7.3, no changes needed.
+  * debian/uscan-tarball-clean.sh, debian/watch:
+    - Adding script for uscan to strip upstream's debian directory from the
+      tarball.
+  * debian/README.Debian-source:
+    - Adding file, describing the reason for repackaging upstream's tarball.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Wed, 26 Dec 2007 14:39:30 +0100
+
+ipy (1:0.55-1) unstable; urgency=low
+
+  * New upstream version (Closes: #450580).
+  * debian/control:
+    - Added Vcs-Browser field.
+    - Fixed lintian errors by adding python-all to Build-Depends and
+      python-support to Build-Depends-Indep.
+    - Rename XS-Vcs-Svn fields to Vcs-Svn (dpkg supports them now).
+    - Adding myself to uploaders.
+    - Adding ${misc:Depends} to Depends.
+    - Removing cdbs from Build-Depends, not used anymore.
+    - Adding python-docutils to Build-Depends-Indep to create IPy.html
+  * debian/watch:
+    - Updated file to check the new location at Python's cheeseshop.
+  * debian/compat:
+    - Bumping to level 5.
+  * debian/copyright:
+    - Updating file to reflect the content of the current upstream tarball.
+  * debian/rules:
+    - Rewriting file, removing cdbs, run tests during the build process.
+  * debian/{docs, examples}:
+    - Adding files.
+  * debian/patches:
+    - Removing unused directory.
+  * debian/pyversions:
+    - Even 2.2 is supported, updating file for those who like to do backports.
+
+ -- Bernd Zeimetz <bernd@bzed.de>  Thu, 08 Nov 2007 11:52:06 +0100
+
+ipy (1:0.52-2) unstable; urgency=low
+
+  [ Piotr Ozarowski ]
+  * Added XS-Vcs-Svn field
+  
+  [ Morten Werner Olsen ]
+  * Only provides ${python:Provides} as we only want to provide packages
+    for supported python versions. (Closes: #399934)
+
+ -- Morten Werner Olsen <werner@debian.org>  Mon, 27 Nov 2006 09:08:18 +0100
+
+ipy (1:0.52-1) unstable; urgency=medium
+
+  * New upstream release.
+     - Fixes unit tests which makes the package work with python2.3 and
+       python2.5
+     - Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
+  * Setting urgency to medium as I want these bugfixes to enter etch.
+  * Including the new COPYING file from upstream with license info.
+
+ -- Morten Werner Olsen <werner@debian.org>  Sun, 19 Nov 2006 17:21:55 +0100
+
+ipy (1:0.5-1) unstable; urgency=medium
+
+  * New upstream release from new upstream maintainer. This version fixes
+    all known bugs (take a look at upstream changelog for more info).
+  * Setting urgency to medium as I want these bugfixed to enter etch.
+  * Adding an epoch to version-number as 0.5 actually is newer than 0.42.
+  * Removed 01-0_0_0_0_netmask.patch as it is fixed with new release.
+  * Updated debian/copyright with info about new homepage and upstream
+    maintainer.
+  * Moved XS- and XB-Python-Version from debian/control to debian/pyversions.
+  * Installing new upstream ChangeLog.
+  * Bumped Standards-Version to 3.7.2 (no changes).
+
+ -- Morten Werner Olsen <werner@debian.org>  Thu,  2 Nov 2006 08:28:25 +0100
+
+ipy (0.42-7) unstable; urgency=low
+
+  * Add missing Build-Depends-Indep. Closes: #374642
+
+ -- Raphael Hertzog <hertzog@debian.org>  Tue, 20 Jun 2006 18:07:06 +0200
+
+ipy (0.42-6) unstable; urgency=low
+
+  * Updated for new Python policy. Closes: #373445
+
+ -- Raphael Hertzog <hertzog@debian.org>  Sun, 18 Jun 2006 00:18:16 +0200
+
+ipy (0.42-5) unstable; urgency=low
+
+  * Now team maintaining the package within the Debian Python Modules Team
+    (changing Maintainer address and adding myself as uploader).
+  * Added patch to prevent failure with networks with netmask 0.0.0.0.
+    (Closes: #358384)
+  * Moving debhelper and cdbs to Build-Depends.
+  * Started using python-support.
+     - Making the python-ipy package depend on python-support and adding
+       add Provides/Conflicts/Replaces on python2.3-ipy and python2.4-ipy.
+     - Moving files from site-packages to python-support in debian/rules.
+     - Adding python-support stuff in postinst and prerm.
+
+ -- Morten Werner Olsen <werner@debian.org>  Mon,  1 May 2006 14:23:25 +0200
+
+ipy (0.42-4) unstable; urgency=low
+
+  * Updated maintainer address. :)
+
+ -- Morten Werner Olsen <werner@debian.org>  Tue, 14 Mar 2006 00:10:13 +0100
+
+ipy (0.42-3) unstable; urgency=low
+
+  * Adding python to Build-Depends-Indep (thanks to Andreas Jochens for
+    pointing this out). Closes: #325681
+
+ -- Morten Werner Olsen <werner@skolelinux.no>  Sun,  4 Sep 2005 11:31:48 +0200
+
+ipy (0.42-2) unstable; urgency=low
+
+  * Added DEB_PYTHON_COMPILE_VERSION to debian/rules, as the cdbs' Python
+    class uses 'python' as its default. Thanks to Blars Blarson for
+    bugreport. (Closes: #320161)
+  * Now debhelper gets to decide the Python-dependencies for python2.3-ipy
+    and python2.4-ipy.
+  * Changed all packages to Architecture: all. Thanks to Chris Lawrence for
+    bugreport. (Closes: #320530)
+
+ -- Morten Werner Olsen <werner@skolelinux.no>  Fri, 29 Jul 2005 00:14:01 +0200
+
+ipy (0.42-1) unstable; urgency=low
+
+  * Initial Release. (Closes: #311135)
+
+ -- Morten Werner Olsen <werner@skolelinux.no>  Thu, 14 Jul 2005 16:16:05 +0300
+

@@ -1,0 +1,31 @@
+Source: ipy
+Section: python
+Priority: optional
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Bernd Zeimetz <bzed@debian.org>, Morten Werner Forsbring <werner@debian.org>
+Build-Depends: debhelper (>= 9), python-all (>= 2.6.5-2~), python3-all
+Build-Depends-Indep: python-docutils
+X-Python-Version: >= 2.5
+Standards-Version: 3.9.4
+Homepage: https://github.com/haypo/python-ipy/
+Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/ipy/trunk/
+Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/ipy/trunk/
+
+Package: python-ipy
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: Python module for handling IPv4 and IPv6 addresses and networks
+ IPy is a Python module for handling IPv4 and IPv6 addresses and
+ networks in a fashion similar to perl's Net::IP and friends. The IP
+ class allows a comfortable parsing and handling for most notations in
+ use for IPv4 and IPv6 addresses and networks.
+
+Package: python3-ipy
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Python3 module for handling IPv4 and IPv6 addresses and networks
+ IPy is a Python3 module for handling IPv4 and IPv6 addresses and
+ networks in a fashion similar to perl's Net::IP and friends. The IP
+ class allows a comfortable parsing and handling for most notations in
+ use for IPv4 and IPv6 addresses and networks.
+
