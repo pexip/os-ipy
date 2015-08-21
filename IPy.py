@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.81'
+__version__ = '0.83'
 
 import bisect
 import collections
@@ -20,6 +20,7 @@ IPv4ranges = {
     '0':                'PUBLIC',   # fall back
     '00000000':         'PRIVATE',  # 0/8
     '00001010':         'PRIVATE',  # 10/8
+    '0110010001':       'CARRIER_GRADE_NAT', #100.64/10
     '01111111':         'PRIVATE',  # 127.0/8
     '1':                'PUBLIC',   # fall back
     '1010100111111110': 'PRIVATE',  # 169.254/16
@@ -610,6 +611,8 @@ class IPint(object):
         IP('127.0.0.3')
         """
 
+        if isinstance(key, slice):
+            return [self.ip + int(x) for x in xrange(*key.indices(len(self)))]
         if not isinstance(key, INT_TYPES):
             raise TypeError
         if key < 0:
@@ -959,6 +962,8 @@ class IP(IPint):
         >>> print(str(ip[-1]))
         127.0.0.3
         """
+        if isinstance(key, slice):
+            return [IP(IPint.__getitem__(self, x), ipversion=self._ipversion) for x in xrange(*key.indices(len(self)))]
         return IP(IPint.__getitem__(self, key), ipversion=self._ipversion)
 
     def __repr__(self):
@@ -1012,12 +1017,7 @@ class IP(IPint):
         raise ValueError("%s cannot be converted to an IPv4 address."
                          % repr(self))
 
-try:
-    IPSetBaseClass = collections.MutableSet
-except AttributeError:
-    IPSetBaseClass = object
-
-class IPSet(IPSetBaseClass):
+class IPSet(collections.MutableSet):
     def __init__(self, iterable=[]):
         # Make sure it's iterable, otherwise wrap
         if not isinstance(iterable, collections.Iterable):
@@ -1038,13 +1038,11 @@ class IPSet(IPSetBaseClass):
             #Don't dig through more-specific ranges
             ip_mask = ip._prefixlen
             valid_masks = [x for x in valid_masks if x <= ip_mask]
-        for mask in valid_masks:
+        for mask in sorted(valid_masks):
             i = bisect.bisect(self.prefixtable[mask], ip)
             # Because of sorting order, a match can only occur in the prefix
             # that comes before the result of the search.
-            if i == 0:
-                return False
-            if ip in self.prefixtable[mask][i - 1]:
+            if i and ip in self.prefixtable[mask][i - 1]:
                 return True
 
     def __iter__(self):
@@ -1063,6 +1061,31 @@ class IPSet(IPSetBaseClass):
             new.discard(prefix)
         return new
     
+    def __and__(self, other):
+        left = iter(self.prefixes)
+        right = iter(other.prefixes)
+        result = []
+        try:
+            l = next(left)
+            r = next(right)
+            while True:
+                # iterate over prefixes in order, keeping the smaller of the
+                # two if they overlap
+                if l in r:
+                    result.append(l)
+                    l = next(left)
+                    continue
+                elif r in l:
+                    result.append(r)
+                    r = next(right)
+                    continue
+                if l < r:
+                    l = next(left)
+                else:
+                    r = next(right)
+        except StopIteration:
+            return IPSet(result)
+
     def __repr__(self):
         return '%s([' % self.__class__.__name__ + ', '.join(map(repr, self.prefixes)) + '])'
     
@@ -1119,6 +1142,22 @@ class IPSet(IPSetBaseClass):
                     break
                 
         self.optimize()
+
+    def isdisjoint(self, other):
+        left = iter(self.prefixes)
+        right = iter(other.prefixes)
+        try:
+            l = next(left)
+            r = next(right)
+            while True:
+                if l in r or r in l:
+                    return False
+                if l < r:
+                    l = next(left)
+                else:
+                    r = next(right)
+        except StopIteration:
+            return True
 
     def optimize(self):
         # The algorithm below *depends* on the sort order
@@ -1597,7 +1636,7 @@ def _remove_subprefix(prefix, subprefix):
     # Start cutting in half, recursively
     prefixes = [
         IP('%s/%d' % (prefix[0], prefix._prefixlen + 1)),
-        IP('%s/%d' % (prefix[prefix.len() / 2], prefix._prefixlen + 1)),
+        IP('%s/%d' % (prefix[int(prefix.len() / 2)], prefix._prefixlen + 1)),
     ]
     if subprefix in prefixes[0]:
         return _remove_subprefix(prefixes[0], subprefix) + IPSet([prefixes[1]])

@@ -16,8 +16,6 @@ import IPy
 import unittest
 import random
 
-testloops = 250
-
 class parseAddress(unittest.TestCase):
     okValues = [('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210', 338770000845734292534325025077361652240),
                 ('FEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240),
@@ -201,21 +199,6 @@ class _intToIP(unittest.TestCase):
         self.assertRaises(ValueError, IPy.intToIp, 1, 5)
         self.assertRaises(ValueError, IPy.intToIp, 1, 7)
         self.assertRaises(ValueError, IPy.intToIp, 1, 8)
-
-class ParseAndBack(unittest.TestCase):
-    def testRandomValuesv4(self):
-        for i in range(testloops):
-            question = random.randrange(0x7fffffff) + random.randrange(0x7fffffff)
-            self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 4)), (question, 4), hex(question))
-
-    def testRandomValuesv6(self):
-        for i in range(testloops):
-            question = ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 32) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 64) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 96))
-            self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 6)), (question, 6), hex(question))
-
 
 class _countXBits(unittest.TestCase):
     def testCount1Bits(self):
@@ -463,6 +446,7 @@ class PythonObjectBehaviour(unittest.TestCase):
         self.assertEqual(ip[0], ip.net())
         self.assertEqual(ip[-1], ip.broadcast())
         self.assertTrue(ip[255])
+        self.assertTrue(isinstance(ip[4::4], list))
         self.assertRaises(IndexError, ip.__getitem__, 256)
 
     def testStr(self):
@@ -844,9 +828,52 @@ class IPSetChecks(unittest.TestCase):
         self.t.discard(self.sixRange)
         self.assertEqual(self.t, self.c)
 
+    def testAnd(self):
+        ten24s = IPy.IPSet([
+            IPy.IP('10.0.1.0/24'),
+            IPy.IP('10.0.3.0/24'),
+            IPy.IP('10.0.5.0/24'),
+            IPy.IP('10.0.7.0/24'),
+        ])
+
+        self.assertEqual(ten24s & IPy.IPSet([IPy.IP('10.0.1.10')]),
+                         IPy.IPSet([IPy.IP('10.0.1.10')]))
+
+        self.assertEqual(ten24s & IPy.IPSet([
+            IPy.IP('10.0.0.99'),
+            IPy.IP('10.0.1.10'),
+            IPy.IP('10.0.3.40'),
+            IPy.IP('11.1.1.99'),
+        ]), IPy.IPSet([
+            IPy.IP('10.0.1.10'),
+            IPy.IP('10.0.3.40'),
+        ]))
+
     def testContains(self):
         self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
         self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
+
+        # test for a regression where __contains__ prematurely returns False
+        # after testing a prefix length where all IP instances are greater than
+        # the query IP.
+        ipset = IPy.IPSet([IPy.IP('10.0.0.0/8'), IPy.IP('128.0.0.0/1')])
+        self.assertTrue(IPy.IP('10.0.0.0') in ipset)
+
+    def testIsdisjoint(self):
+        self.assertTrue(IPy.IPSet([IPy.IP('0.0.0.0/1')])
+                .isdisjoint(IPy.IPSet([IPy.IP('128.0.0.0/1')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/1')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/1')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.1.2.3')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.1.2.3')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+        self.assertTrue(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3')])
+                .isdisjoint(IPy.IPSet([IPy.IP('1.1.1.2'), IPy.IP('1.1.1.4')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3'), IPy.IP('1.1.2.0/24')])
+                .isdisjoint(IPy.IPSet([IPy.IP('1.1.2.2'), IPy.IP('1.1.1.4')])))
 
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):

@@ -1,3 +1,21 @@
+ipy (1:0.83-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release. 
+
+ -- Bernd Zeimetz <bzed@debian.org>  Fri, 21 Aug 2015 10:34:33 +0200
+
+ipy (1:0.82a-1) experimental; urgency=low
+
+  * Team upload.
+  * New upstream release. 
+  * debian/control:
+    - Bump Standards-Version to 3.9.6.
+  * debian/watch:
+    - Update regex (The old url led to an useless blank page).
+
+ -- Hugo Lefeuvre <hugo6390@orange.fr>  Sat, 24 Jan 2015 10:57:26 +0100
+
 ipy (1:0.81-1) unstable; urgency=low
 
   * Team Upload

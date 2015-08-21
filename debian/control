@@ -2,11 +2,14 @@ Source: ipy
 Section: python
 Priority: optional
 Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Uploaders: Bernd Zeimetz <bzed@debian.org>, Morten Werner Forsbring <werner@debian.org>
-Build-Depends: debhelper (>= 9), python-all (>= 2.6.5-2~), python3-all
+Uploaders: Bernd Zeimetz <bzed@debian.org>, 
+           Morten Werner Forsbring <werner@debian.org>
+Build-Depends: debhelper (>= 9), 
+               python-all (>= 2.6.5-2~), 
+               python3-all
 Build-Depends-Indep: python-docutils
 X-Python-Version: >= 2.5
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Homepage: https://github.com/haypo/python-ipy/
 Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/ipy/trunk/
 Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/ipy/trunk/

@@ -1,4 +1,24 @@
+Version 0.83 (2015-04-04)
+------------
+ * Add carrier grade NAT ranges
+ * Unbreak lots of packing systems by not having a letter in the release version
+
+Version 0.82a (2014-10-07)
+------------
+ * Fix version numbers in files
+ * Correct x.next() -> next(x) python3 compatability
+
+Version 0.82 (2014-10-06)
+------------
+
+ * Add support for array slices
+ * Add __and__ and isdisjoint for IPSet
+ * Fix a bug in IPSet where contains may incorrectly return false
+ * Added some fuzz testing
+
 Version 0.81 (2013-04-08)
+------------
+
  * Correct reverseName() for IPv6 addresses, so IP('::1').reverseName() returns correct.
  * Add network mask awareness to v46map()
  * Fix Python 3 errors in IPSet class
