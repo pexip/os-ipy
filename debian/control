@@ -11,7 +11,7 @@ Standards-Version: 3.9.4
 Homepage: https://github.com/haypo/python-ipy/
 Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/ipy/trunk/
 Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/ipy/trunk/
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
 
 Package: python-ipy
 Architecture: all
