@@ -1,6 +1,6 @@
 IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 
-Website: https://github.com/haypo/python-ipy/
+Website: https://github.com/autocracy/python-ipy/
 
 Presentation of the API
 =======================
@@ -154,12 +154,39 @@ unique address ranges and will aggregate overlapping ranges.
     >>> s
     IPSet([IP('10.0.0.0/22'), IP('192.168.1.0/31'), IP('192.168.1.3'), IP('192.168.1.4/30')])
 
+IPSet supports the `set` method `isdisjoint`:
+
+    >>> s.isdisjoint(IPSet([IP('192.168.0.0/16')]))
+    False
+    >>> s.isdisjoint(IPSet([IP('172.16.0.0/12')]))
+    True
+
+IPSet supports intersection:
+
+    >>> s & IPSet([IP('10.0.0.0/8')])
+    IPSet([IP('10.0.0.0/22')])
+
 Compatibility and links
 =======================
 
-IPy 0.81 works on Python version 2.5 - 3.3.
+IPy 0.83 works on Python version 2.6 - 3.4.
+
+The IP module should work in Python 2.5 as long as the subtraction operation
+is not used. IPSet requires features of the collecitons class which appear
+in Python 2.6, though they can be backported.
+
+Eratta
+======
+
+When using IPv6 addresses, it is best to compare using IP().len() instead of
+len(IP). Addresses with an integer value > 64 bits can break the 2nd method.
+See http://stackoverflow.com/questions/15650878 for more info.
+
+Fuzz testing for IPSet will throw spurious errors when the IPSet module
+combines two smaller prefixes into a larger prefix that matches the random
+prefix tested against.
 
 This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
-https://github.com/haypo/python-ipy
+https://github.com/autocracy/python-ipy

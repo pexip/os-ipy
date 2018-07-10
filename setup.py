@@ -24,7 +24,7 @@ from __future__ import with_statement
 import sys
 from distutils.core import setup
 
-VERSION = '0.81'
+VERSION = '0.83'
 
 options = {}
 
@@ -54,7 +54,7 @@ CLASSIFIERS = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
 ]
-URL = "https://github.com/haypo/python-ipy"
+URL = "https://github.com/autocracy/python-ipy"
 
 setup(
     name="IPy",
