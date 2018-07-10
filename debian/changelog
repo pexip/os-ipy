@@ -1,3 +1,9 @@
+ipy (1:0.83-1pexip1) pexip; urgency=medium
+
+  * Migrate to Stretch
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 10 Jul 2018 11:05:40 +0000
+
 ipy (1:0.83-1) unstable; urgency=medium
 
   * Team upload
